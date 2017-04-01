@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+    <title>Lidar Light 3</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body>
+    <div id="distance-chart"></div>
+    <div id="velocity-chart"></div>
+
+    <script>
+        google.charts.load('current', {packages: ['corechart', 'line']});
+        google.charts.setOnLoadCallback(draw);
+
+        d_i = 0;
+
+        function draw() {
+            var distanceData = new google.visualization.DataTable();
+            distanceData.addColumn("number", "sample");
+            distanceData.addColumn("number", "distance");
+
+            var velocityData = new google.visualization.DataTable();
+            velocityData.addColumn("number", "sample");
+            velocityData.addColumn("number", "velocity");
+
+            var distanceOptions = {
+                hAxis: {
+                    title: "Sample"
+                },
+                vAxis: {
+                    title: "Distance"
+                },
+                title: "Distance"
+            };
+
+             var velocityOptions = {
+                hAxis: {
+                    title: "Sample"
+                },
+                vAxis: {
+                    title: "Velocity"
+                },
+                title: "Velocity"
+            };
+
+            var distanceChart = new google.visualization.LineChart(document.getElementById("distance-chart"));
+            distanceChart.draw(distanceData, distanceOptions);
+
+            var velocityChart = new google.visualization.LineChart(document.getElementById("velocity-chart"))
+
+            setInterval(function(){
+                var distanceReq = new XMLHttpRequest();
+                distanceReq.open("GET", "/distance", false);
+                distanceReq.send(null);
+
+                var velocityReq = new XMLHttpRequest();
+                velocityReq.open("GET", "/velocity", false);
+                velocityReq.send(null);
+
+                var distanceBody = distanceReq.responseText;
+                var velocityBody = velocityReq.responseText;
+
+                var distance = parseInt(distanceBody);
+                var velocity = parseInt(velocityBody);
+
+                distanceData.addRows([[d_i, distance]]);
+                velocityData.addRows([[d_i, velocity]]);
+                d_i++;
+
+                distanceChart.draw(distanceData, distanceOptions);
+                velocityChart.draw(velocityData, velocityOptions);
+            }, 100);
+        }
+    </script>
+</body>
+</html>
