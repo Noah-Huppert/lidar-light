@@ -48,7 +48,7 @@ ssh: check
 	$(SSH_CMD)
 
 python-setup: check
-	$(SSH_CMD) "opkg update && opkg install python-light python-pip pythonOnionI2C && pip install --user Flask"
+	$(SSH_CMD) "opkg update && opkg install python-light python-pip pythonOnionI2C && pip install --user -r requirements.txt"
 
 # Check all programs are installed
 # Make is assumed to be installed since this is running...

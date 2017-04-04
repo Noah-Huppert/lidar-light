@@ -1,5 +1,6 @@
-# Lidar Omega (py)
-This repository holds code necessary to use use a Lidar Lite v3 unit with an Omega. Programmed in Python 2.
+# Lidar Lite
+This repository holds the code necessary to use a Garmin Lidar Lite V3 unit with an Omega. Code is written in Python 2. 
+Version 3 should be supported however the Omega runs Python 2.
 
 # Setup
 This project uses GNU Make, SSH, SSH Pass, and SCP to manage and run code on the Omega. Please ensure these programs are 
