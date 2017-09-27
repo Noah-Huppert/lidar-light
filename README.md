@@ -8,7 +8,7 @@ This repository holds code necessary to use use a Lidar Lite v3 unit with an Ome
 - [Web Server](#web-server)
 
 # Overview
-This repository provides 2 components. A `LidarLite` class for use in interfacing with a Lidar Lite v3 unit. And a simple webserver which serves a page with a distance and velocity graph:
+This repository provides 2 components. A `LidarLite` class which interfaces with a Lidar Lite v3 unit. And a simple webserver which serves a page with a distance and velocity graph:
 
 ![Webpage distance and velocity graph screenshot](https://github.com/Noah-Huppert/lidar-lite/raw/master/screenshot.png).
 
