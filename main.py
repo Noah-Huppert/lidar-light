@@ -573,7 +573,7 @@ class RegisterList():
         out += "}>"
         return out
 
-class LidarLight():
+class LidarLite():
     # Register and Segment name constants
     REG_ACQ_COMMAND = "ACQ_COMMAND"
     SEG_ACQ_COMMAND = REG_ACQ_COMMAND
@@ -602,29 +602,29 @@ class LidarLight():
     def __init__(self):
         # Configure control registers
         self.controls = RegisterList(0x62, {})
-        self.controls.add(LidarLight.REG_ACQ_COMMAND, 0x00, Register.WRITE, {}) \
-            .add(LidarLight.SEG_ACQ_COMMAND, 0, 7, [0] * 8)
+        self.controls.add(LidarLite.REG_ACQ_COMMAND, 0x00, Register.WRITE, {}) \
+            .add(LidarLite.SEG_ACQ_COMMAND, 0, 7, [0] * 8)
 
-        self.controls.add(LidarLight.REG_STATUS, 0x01, Register.READ, {}) \
-            .add(LidarLight.SEG_PROC_ERROR_FLAG, 6, 6, [0]) \
-            .add(LidarLight.SEG_HEALTH_FLAG, 5, 5, [0]) \
-            .add(LidarLight.SEG_SECONDARY_RET_FLAG, 4, 4, [0]) \
-            .add(LidarLight.SEG_INVALID_SIGNAL_FLAG, 3, 3, [0]) \
-            .add(LidarLight.SEG_SIGNAL_OVERFLOW_FLAG, 2, 2, [0]) \
-            .add(LidarLight.SEG_REFERENCE_OVERFLOW_FLAG, 1, 1, [0]) \
-            .add(LidarLight.SEG_BUSY_FLAG, 0, 0, [0])
+        self.controls.add(LidarLite.REG_STATUS, 0x01, Register.READ, {}) \
+            .add(LidarLite.SEG_PROC_ERROR_FLAG, 6, 6, [0]) \
+            .add(LidarLite.SEG_HEALTH_FLAG, 5, 5, [0]) \
+            .add(LidarLite.SEG_SECONDARY_RET_FLAG, 4, 4, [0]) \
+            .add(LidarLite.SEG_INVALID_SIGNAL_FLAG, 3, 3, [0]) \
+            .add(LidarLite.SEG_SIGNAL_OVERFLOW_FLAG, 2, 2, [0]) \
+            .add(LidarLite.SEG_REFERENCE_OVERFLOW_FLAG, 1, 1, [0]) \
+            .add(LidarLite.SEG_BUSY_FLAG, 0, 0, [0])
 
-        self.controls.add(LidarLight.REG_PEAK_CORR, 0x0c, Register.READ, {})\
-            .add(LidarLight.SEG_PEAK_CORR, 0, 7, [0] * 8)
+        self.controls.add(LidarLite.REG_PEAK_CORR, 0x0c, Register.READ, {})\
+            .add(LidarLite.SEG_PEAK_CORR, 0, 7, [0] * 8)
 
-        self.controls.add(LidarLight.REG_VELOCITY, 0x09, Register.READ, {})\
-            .add(LidarLight.SEG_VELOCITY, 0, 7, [0] * 8)
+        self.controls.add(LidarLite.REG_VELOCITY, 0x09, Register.READ, {})\
+            .add(LidarLite.SEG_VELOCITY, 0, 7, [0] * 8)
 
-        self.controls.add(LidarLight.REG_OUTER_LOOP_COUNT, 0x11, Register.READ + Register.WRITE, {})\
-            .add(LidarLight.SEG_OUTER_LOOP_COUNT, 0, 7, [0] * 8)
+        self.controls.add(LidarLite.REG_OUTER_LOOP_COUNT, 0x11, Register.READ + Register.WRITE, {})\
+            .add(LidarLite.SEG_OUTER_LOOP_COUNT, 0, 7, [0] * 8)
 
-        self.controls.add(LidarLight.REG_DISTANCE, 0x8f, Register.READ, {})\
-            .add(LidarLight.SEG_DISTANCE, 0, 15, [0] * 16)
+        self.controls.add(LidarLite.REG_DISTANCE, 0x8f, Register.READ, {})\
+            .add(LidarLite.SEG_DISTANCE, 0, 15, [0] * 16)
 
     """Writes Register with given name when device is ready
     Determines when device is ready by STATUS.BUSY_FLAG until 0
@@ -686,18 +686,18 @@ class LidarLight():
     """Resets device
     """
     def reset(self):
-        self.set_bit_when_ready_from_int(LidarLight.REG_ACQ_COMMAND, LidarLight.SEG_ACQ_COMMAND, 0x00)
+        self.set_bit_when_ready_from_int(LidarLite.REG_ACQ_COMMAND, LidarLite.SEG_ACQ_COMMAND, 0x00)
 
-    """Sets up Lidar Light device
+    """Sets up Lidar Lite device
     """
     def setup(self):
-        self.set_bit_when_ready_from_int(LidarLight.REG_ACQ_COMMAND, LidarLight.SEG_ACQ_COMMAND, 0x04)
+        self.set_bit_when_ready_from_int(LidarLite.REG_ACQ_COMMAND, LidarLite.SEG_ACQ_COMMAND, 0x04)
 
     def setup_indefinite_measurements(self):
-        self.set_bit_when_ready_from_int(LidarLight.REG_ACQ_COMMAND, LidarLight.SEG_ACQ_COMMAND, 0x04)
-        self.set_bit_when_ready_from_int(LidarLight.REG_OUTER_LOOP_COUNT, LidarLight.SEG_OUTER_LOOP_COUNT, 0xff)
+        self.set_bit_when_ready_from_int(LidarLite.REG_ACQ_COMMAND, LidarLite.SEG_ACQ_COMMAND, 0x04)
+        self.set_bit_when_ready_from_int(LidarLite.REG_OUTER_LOOP_COUNT, LidarLite.SEG_OUTER_LOOP_COUNT, 0xff)
 
-lidar = LidarLight()
+lidar = LidarLite()
 lidar.reset()
 lidar.setup_indefinite_measurements()
 
@@ -710,16 +710,16 @@ def route_home():
 @app.route("/distance")
 def route_distance():
     # Trigger read
-    lidar.set_bit_when_ready_from_int(LidarLight.REG_ACQ_COMMAND, LidarLight.SEG_ACQ_COMMAND, 0x04)
+    lidar.set_bit_when_ready_from_int(LidarLite.REG_ACQ_COMMAND, LidarLite.SEG_ACQ_COMMAND, 0x04)
 
     # Get distance
-    distance = lidar.controls.to_int(LidarLight.REG_DISTANCE, LidarLight.SEG_DISTANCE, read_first=True)
+    distance = lidar.controls.to_int(LidarLite.REG_DISTANCE, LidarLite.SEG_DISTANCE, read_first=True)
 
     return jsonify(distance)
 
 @app.route("/velocity")
 def route_velocity():
-    velocity = lidar.controls.to_twos_comp_int(LidarLight.REG_VELOCITY, LidarLight.SEG_VELOCITY, read_first=True)
+    velocity = lidar.controls.to_twos_comp_int(LidarLite.REG_VELOCITY, LidarLite.SEG_VELOCITY, read_first=True)
 
     return jsonify(velocity)
 
